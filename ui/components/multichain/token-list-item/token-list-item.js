@@ -62,6 +62,7 @@ import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { getProviderConfig } from '../../../ducks/metamask/metamask';
 import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
 import { PercentageChange } from './price/percentage-change/percentage-change';
+import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 
 export const TokenListItem = ({
   className,
@@ -141,8 +142,7 @@ export const TokenListItem = ({
           properties: {
             location: 'Token List Item',
             text: 'Stake',
-            // FIXME: This might not be a number for non-EVM accounts
-            chain_id: chainId,
+            chain_id: hexToDecimal(chainId),
             token_symbol: tokenSymbol,
           },
         });
@@ -197,8 +197,7 @@ export const TokenListItem = ({
               event: MetaMetricsEventName.TokenDetailsOpened,
               properties: {
                 location: 'Home',
-                // FIXME: This might not be a number for non-EVM accounts
-                chain_id: chainId,
+                chain_id: hexToDecimal(chainId),
                 token_symbol: tokenSymbol,
               },
             });

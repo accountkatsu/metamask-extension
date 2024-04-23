@@ -69,6 +69,7 @@ import {
   getIsUnlocked,
 } from '../../../ducks/metamask/metamask';
 import { getLocalNetworkMenuRedesignFeatureFlag } from '../../../helpers/utils/feature-flags';
+import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 import AddNetworkModal from '../../../pages/onboarding-flow/add-network-modal';
 import PopularNetworkList from './popular-network-list/popular-network-list';
 import NetworkListSearch from './network-list-search/network-list-search';
@@ -306,7 +307,7 @@ export const NetworkListMenu = ({ onClose }) => {
             category: MetaMetricsEventCategory.Network,
             properties: {
               location: 'Network Menu',
-              chain_id: currentChainId,
+              chain_id: hexToDecimal(currentChainId),
               from_network: currentChainId,
               to_network: network.chainId,
             },

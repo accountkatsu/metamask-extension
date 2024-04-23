@@ -25,6 +25,7 @@ import { getURLHostName } from '../../../helpers/utils/util';
 import { NETWORKS_ROUTE } from '../../../helpers/constants/routes';
 import { getMultichainNetwork } from '../../../selectors/multichain';
 import { useMultichainSelector } from '../../../hooks/useMultichainSelector';
+import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 
 export type ViewExplorerMenuItemProps = {
   /**
@@ -118,7 +119,7 @@ export const ViewExplorerMenuItem = ({
           category: MetaMetricsEventCategory.Accounts,
           properties: {
             location: metricsLocation,
-            chain_id: chainId,
+            chain_id: hexToDecimal(chainId),
           },
         });
 

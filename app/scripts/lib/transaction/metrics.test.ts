@@ -23,6 +23,7 @@ import {
   BlockaidReason,
   BlockaidResultType,
 } from '../../../../shared/constants/security-provider';
+import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 import {
   handleTransactionAdded,
   handleTransactionApproved,
@@ -139,7 +140,7 @@ describe('Transaction metrics', () => {
       account_snap_version: 'snapversion',
       account_type: undefined,
       asset_type: AssetType.native,
-      chain_id: mockChainId,
+      chain_id: hexToDecimal(mockChainId),
       device_model: undefined,
       eip_1559_version: '0',
       gas_edit_attempted: 'none',

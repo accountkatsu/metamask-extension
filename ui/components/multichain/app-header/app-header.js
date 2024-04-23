@@ -34,6 +34,7 @@ import { MultichainMetaFoxLogo } from './multichain-meta-fox-logo';
 import { AppHeaderContainer } from './app-header-container';
 import { AppHeaderUnlockedContent } from './app-header-unlocked-content';
 import { AppHeaderLockedContent } from './app-header-locked-content';
+import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 
 export const AppHeader = ({ location }) => {
   const trackEvent = useContext(MetaMetricsContext);
@@ -96,7 +97,7 @@ export const AppHeader = ({ location }) => {
       category: MetaMetricsEventCategory.Navigation,
       properties: {
         location: 'App header',
-        chain_id: chainId,
+        chain_id: hexToDecimal(chainId),
       },
     });
   }, [chainId, dispatch, trackEvent]);
