@@ -3593,7 +3593,7 @@ export const getSendAnalyticProperties = createSelector(
 
       return {
         is_swap_and_send: isSwapAndSend,
-        chain_id: chainId,
+        chain_id: hexToDecimal(chainId),
         token_amount_source:
           sourceTokenAmount && sourceTokenDecimals
             ? calcTokenAmount(sourceTokenAmount, sourceTokenDecimals).toString()
