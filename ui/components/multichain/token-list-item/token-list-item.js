@@ -61,8 +61,8 @@ import { ENVIRONMENT_TYPE_FULLSCREEN } from '../../../../shared/constants/app';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import { getProviderConfig } from '../../../ducks/metamask/metamask';
 import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
-import { PercentageChange } from './price/percentage-change/percentage-change';
 import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
+import { PercentageChange } from './price/percentage-change/percentage-change';
 
 export const TokenListItem = ({
   className,
