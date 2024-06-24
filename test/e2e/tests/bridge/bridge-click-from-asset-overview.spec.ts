@@ -6,7 +6,7 @@ import { Driver } from '../../webdriver/driver';
 import { BridgePage, getBridgeFixtures } from './bridge-test-utils';
 
 describe('Click bridge button from asset page @no-mmi', function (this: Suite) {
-  it('loads portfolio tab when flag is turned off', async function () {
+  it('loads portfolio tab from account overview when flag is turned off', async function () {
     await withFixtures(
       // withErc20 param is false, as we test it manually below
       getBridgeFixtures(this.test?.fullTitle(), undefined, false),
@@ -27,6 +27,7 @@ describe('Click bridge button from asset page @no-mmi', function (this: Suite) {
         await bridgePage.load('coin-overview');
         await bridgePage.verifyPortfolioTab(
           'https://portfolio.metamask.io/bridge?metametricsId=null',
+          2,
         );
 
         await bridgePage.reloadHome();
@@ -36,7 +37,42 @@ describe('Click bridge button from asset page @no-mmi', function (this: Suite) {
         await bridgePage.load('token-overview');
         await bridgePage.verifyPortfolioTab(
           'https://portfolio.metamask.io/bridge?metametricsId=null',
+          3,
         );
+      },
+    );
+  });
+
+  it('loads placeholder swap route when flag is turned on', async function () {
+    await withFixtures(
+      getBridgeFixtures(
+        this.test?.fullTitle(),
+        { 'extension-support': true },
+        false,
+      ),
+      async ({
+        driver,
+        ganacheServer,
+        contractRegistry,
+      }: {
+        driver: Driver;
+        ganacheServer: Ganache;
+        contractRegistry: GanacheContractAddressRegistry;
+      }) => {
+        const bridgePage = new BridgePage(driver);
+        await logInWithBalanceValidation(driver, ganacheServer);
+
+        // ETH
+        await bridgePage.loadAssetPage(contractRegistry);
+        await bridgePage.load('coin-overview');
+        await bridgePage.verifySwapPage();
+
+        await bridgePage.reloadHome();
+
+        // TST
+        await bridgePage.loadAssetPage(contractRegistry, 'TST');
+        await bridgePage.load('token-overview');
+        await bridgePage.verifySwapPage();
       },
     );
   });

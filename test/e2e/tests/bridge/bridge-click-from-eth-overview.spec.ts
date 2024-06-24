@@ -20,7 +20,26 @@ describe('Click bridge button from wallet overview @no-mmi', function (this: Sui
         await bridgePage.load();
         await bridgePage.verifyPortfolioTab(
           'https://portfolio.metamask.io/bridge?metametricsId=null',
+          2,
         );
+      },
+    );
+  });
+
+  it('loads placeholder swap route when flag is turned on', async function () {
+    await withFixtures(
+      getBridgeFixtures(this.test?.fullTitle(), { 'extension-support': true }),
+      async ({
+        driver,
+        ganacheServer,
+      }: {
+        driver: Driver;
+        ganacheServer: Ganache;
+      }) => {
+        const bridgePage = new BridgePage(driver);
+        await logInWithBalanceValidation(driver, ganacheServer);
+        await bridgePage.load();
+        await bridgePage.verifySwapPage();
       },
     );
   });
