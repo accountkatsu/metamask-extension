@@ -44,12 +44,6 @@ export default function SnapPermissionsList({
 
   const snapsMetadata = useSelector(getSnapsMetadata);
 
-  const [showAll, setShowAll] = useState(false);
-
-  if (showAllPermissions && !showAll) {
-    setShowAll(true);
-  }
-
   const weightedPermissions = getWeightedPermissions({
     t,
     permissions: combinedPermissions,
@@ -57,13 +51,11 @@ export default function SnapPermissionsList({
     getSubjectName: getSnapName(snapsMetadata),
   });
 
-  if (
-    Object.keys(weightedPermissions).length <=
-      PermissionsAbstractionThreshold &&
-    !showAll
-  ) {
-    setShowAll(true);
-  }
+  const [showAll, setShowAll] = useState(
+    showAllPermissions ||
+      Object.keys(weightedPermissions).length <=
+        PermissionsAbstractionThreshold,
+  );
 
   const filteredPermissions = getFilteredSnapPermissions(
     weightedPermissions,
