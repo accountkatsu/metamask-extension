@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
@@ -12,13 +12,16 @@ import {
   FlexDirection,
   JustifyContent,
 } from '../../../../helpers/constants/design-system';
-import SnapPermissionAdapter from '../snap-permission-adapter';
 import {
   PermissionsAbstractionThreshold,
   PermissionWeightThreshold,
 } from '../../../../../shared/constants/permissions';
-import { getSnapName } from '../../../../helpers/utils/util';
+import {
+  getFilteredSnapPermissions,
+  getSnapName,
+} from '../../../../helpers/utils/util';
 import { getWeightedPermissions } from '../../../../helpers/utils/permission';
+import SnapPermissionAdapter from '../snap-permission-adapter';
 
 export default function SnapPermissionsList({
   snapId,
@@ -43,73 +46,30 @@ export default function SnapPermissionsList({
 
   const [showAll, setShowAll] = useState(false);
 
-  const [permissionsToDisplay, setPermissionsToDisplay] = useState([]);
+  if (showAllPermissions && !showAll) {
+    setShowAll(true);
+  }
 
-  const [weightedPermissions, setWeightedPermissions] = useState({});
-
-  useEffect(() => {
-    let finalPermissions = weightedPermissions;
-    if (Object.keys(finalPermissions).length === 0) {
-      finalPermissions = getWeightedPermissions({
-        t,
-        permissions: combinedPermissions,
-        subjectName: snapName,
-        getSubjectName: getSnapName(snapsMetadata),
-      });
-      setWeightedPermissions(finalPermissions);
-    }
-
-    // Handle abstraction of permissions
-    if (showAllPermissions && !showAll) {
-      setShowAll(true);
-    }
-
-    if (
-      Object.keys(finalPermissions).length <= PermissionsAbstractionThreshold &&
-      !showAll
-    ) {
-      setShowAll(true);
-    }
-
-    // Handle what to display based on the permission abstraction criteria
-    if (showAll) {
-      setPermissionsToDisplay(
-        <SnapPermissionAdapter
-          permissions={finalPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          showOptions={showOptions}
-        />,
-      );
-    } else {
-      setPermissionsToDisplay(
-        <SnapPermissionAdapter
-          permissions={finalPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          showOptions={showOptions}
-          weightThreshold={PermissionWeightThreshold.snapInstall}
-        />,
-      );
-    }
-  }, [
-    showAll,
-    setPermissionsToDisplay,
-    weightedPermissions,
-    setWeightedPermissions,
-    snapId,
-    snapName,
-    targetSubjectsMetadata,
-    showOptions,
-    combinedPermissions,
+  const weightedPermissions = getWeightedPermissions({
     t,
-    snapsMetadata,
-    permissions,
-    connections,
-    showAllPermissions,
-  ]);
+    permissions: combinedPermissions,
+    subjectName: snapName,
+    getSubjectName: getSnapName(snapsMetadata),
+  });
+
+  if (
+    Object.keys(weightedPermissions).length <=
+      PermissionsAbstractionThreshold &&
+    !showAll
+  ) {
+    setShowAll(true);
+  }
+
+  const filteredPermissions = getFilteredSnapPermissions(
+    weightedPermissions,
+    PermissionWeightThreshold.snapInstall,
+    true,
+  );
 
   const onShowAllPermissionsHandler = () => {
     onShowAllPermissions();
@@ -118,7 +78,25 @@ export default function SnapPermissionsList({
 
   return (
     <Box display={Display.Flex} flexDirection={FlexDirection.Column}>
-      <Box className="snap-permissions-list">{permissionsToDisplay}</Box>
+      <Box className="snap-permissions-list">
+        {showAll ? (
+          <SnapPermissionAdapter
+            permissions={weightedPermissions}
+            snapId={snapId}
+            snapName={snapName}
+            showOptions={showOptions}
+            targetSubjectsMetadata={targetSubjectsMetadata}
+          />
+        ) : (
+          <SnapPermissionAdapter
+            permissions={filteredPermissions}
+            snapId={snapId}
+            snapName={snapName}
+            showOptions={showOptions}
+            targetSubjectsMetadata={targetSubjectsMetadata}
+          />
+        )}
+      </Box>
       {showAll ? null : (
         <Box
           display={Display.Flex}

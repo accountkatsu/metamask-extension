@@ -2,10 +2,9 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import { renderWithProvider } from '../../../../../test/jest';
 import configureStore from '../../../../store/store';
-import { PermissionWeightThreshold } from '../../../../../shared/constants/permissions';
 import SnapPermissionAdapter from './snap-permission-adapter';
 
-describe('Snap Permission List', () => {
+describe('Snap Permission Adapter', () => {
   const mockSnapId = 'mock-snap-id';
   const mockSnapName = 'Snap Name';
   const mockTargetSubjectMetadata = {
@@ -67,25 +66,23 @@ describe('Snap Permission List', () => {
 
   const store = configureStore(mockState);
 
-  it('renders only permissions with weight less than or equal to 3', () => {
+  it('renders set of provided permissions', () => {
     renderWithProvider(
       <SnapPermissionAdapter
         snapId={mockSnapId}
         snapName={mockSnapName}
         permissions={mockWeightedPermissions}
         targetSubjectsMetadata={{ ...mockTargetSubjectMetadata }}
-        weightThreshold={PermissionWeightThreshold.snapInstall}
       />,
       store,
     );
     expect(
       screen.queryByText('Display dialog windows in MetaMask.'),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
     expect(
       screen.queryByText(
         'Allow websites to communicate directly with Dialog Example Snap.',
       ),
     ).toBeInTheDocument();
-    expect(screen.queryByText('Requested now')).toBeInTheDocument();
   });
 });

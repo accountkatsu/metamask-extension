@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
@@ -14,7 +14,10 @@ import {
   JustifyContent,
 } from '../../../../helpers/constants/design-system';
 import { PermissionWeightThreshold } from '../../../../../shared/constants/permissions';
-import { getSnapName } from '../../../../helpers/utils/util';
+import {
+  getFilteredSnapPermissions,
+  getSnapName,
+} from '../../../../helpers/utils/util';
 import { getWeightedPermissions } from '../../../../helpers/utils/permission';
 
 export default function UpdateSnapPermissionList({
@@ -63,9 +66,6 @@ export default function UpdateSnapPermissionList({
 
   const [showAll, setShowAll] = useState(false);
 
-  const [approvedPermissionsToDisplay, setApprovedPermissionsToDisplay] =
-    useState([]);
-
   const newWeightedPermissions = getWeightedPermissions({
     t,
     permissions: newCombinedPermissions,
@@ -89,44 +89,14 @@ export default function UpdateSnapPermissionList({
     });
   }, [t, approvedCombinedPermissions, snapName, snapsMetadata]);
 
-  useEffect(() => {
-    // If there are no approved permissions to show, then hide "See all" button-link
-    if (Object.keys(approvedWeightedPermissions).length < 1 && !showAll) {
-      setShowAll(true);
-    }
-
-    if (showAll) {
-      setApprovedPermissionsToDisplay(
-        <SnapPermissionAdapter
-          permissions={approvedWeightedPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          approved
-        />,
-      );
-    } else {
-      setApprovedPermissionsToDisplay(
-        <SnapPermissionAdapter
-          permissions={approvedWeightedPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          weightThreshold={
-            PermissionWeightThreshold.snapUpdateApprovedPermissions
-          }
-          approved
-        />,
-      );
-    }
-  }, [
-    showAll,
-    setApprovedPermissionsToDisplay,
+  const filteredApprovedWeightedPermissions = getFilteredSnapPermissions(
     approvedWeightedPermissions,
-    snapId,
-    snapName,
-    targetSubjectsMetadata,
-  ]);
+    PermissionWeightThreshold.snapUpdateApprovedPermissions,
+  );
+
+  if (Object.keys(approvedWeightedPermissions).length < 1 && !showAll) {
+    setShowAll(true);
+  }
 
   const onShowAllPermissions = () => {
     showAllPermissions();
@@ -148,9 +118,23 @@ export default function UpdateSnapPermissionList({
         targetSubjectsMetadata={targetSubjectsMetadata}
         revoked
       />
-      <Box className="snap-permissions-list">
-        {approvedPermissionsToDisplay}
-      </Box>
+      {showAll ? (
+        <SnapPermissionAdapter
+          permissions={approvedWeightedPermissions}
+          snapId={snapId}
+          snapName={snapName}
+          targetSubjectsMetadata={targetSubjectsMetadata}
+          approved
+        />
+      ) : (
+        <SnapPermissionAdapter
+          permissions={filteredApprovedWeightedPermissions}
+          snapId={snapId}
+          snapName={snapName}
+          targetSubjectsMetadata={targetSubjectsMetadata}
+          approved
+        />
+      )}
       {showAll ? null : (
         <Box
           display={Display.Flex}

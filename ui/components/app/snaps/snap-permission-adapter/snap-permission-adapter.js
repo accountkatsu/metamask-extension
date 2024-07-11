@@ -7,21 +7,10 @@ export default function SnapPermissionAdapter({
   permissions,
   showOptions,
   targetSubjectsMetadata,
-  weightThreshold,
   revoked,
   approved,
 }) {
-  let filteredPermissions = permissions.filter(
-    (permission) => permission.weight <= (weightThreshold ?? Infinity),
-  );
-
-  // If there are no permissions that fall into desired set filtered by weight,
-  // then show only the first three, no matter what the weight is
-  if (filteredPermissions.length === 0) {
-    filteredPermissions = permissions.slice(0, 3);
-  }
-
-  return filteredPermissions.map((permission, index) => (
+  return permissions.map((permission, index) => (
     <SnapPermissionCell
       snapId={snapId}
       showOptions={showOptions}
