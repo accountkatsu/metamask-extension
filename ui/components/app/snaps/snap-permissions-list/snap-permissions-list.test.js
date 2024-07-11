@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithProvider } from '../../../../../test/jest';
 import configureStore from '../../../../store/store';
 import SnapPermissionsList from './snap-permissions-list';
@@ -58,13 +58,9 @@ describe('Snap Permission List', () => {
       />,
       store,
     );
-    waitFor(() => {
-      expect(
-        screen.getByText('Display dialog windows in MetaMask.'),
-      ).toBeInTheDocument();
-    });
-    waitFor(() => {
-      expect(screen.getByText('Approved on 2023-04-05')).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText('Display dialog windows in MetaMask.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Approved on 2023-04-05')).toBeInTheDocument();
   });
 });
