@@ -59,7 +59,7 @@ export const PermissionWeight = Object.freeze({
   endowment_rpc: 4,
   endowment_lifecycleHooks: 4,
   endowment_pageHome: 4,
-  snap_manageAccounts: 2,
+  snap_manageAccounts: 3,
   endowment_keyring: 4,
   endowment_nameLookup: 3,
   endowment_signatureInsight: 4,
