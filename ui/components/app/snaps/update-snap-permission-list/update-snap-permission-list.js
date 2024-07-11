@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useI18nContext } from '../../../../hooks/useI18nContext';
@@ -47,12 +47,10 @@ export default function UpdateSnapPermissionList({
 
   const snapsMetadata = useSelector(getSnapsMetadata);
 
-  const approvedCombinedPermissions = useMemo(() => {
-    return {
-      ...approvedPermissions,
-      connection_permission: approvedConnections ?? {},
-    };
-  }, [approvedPermissions, approvedConnections]);
+  const approvedCombinedPermissions = {
+    ...approvedPermissions,
+    connection_permission: approvedConnections ?? {},
+  };
 
   const revokedCombinedPermissions = {
     ...revokedPermissions,
@@ -80,14 +78,12 @@ export default function UpdateSnapPermissionList({
     getSubjectName: getSnapName(snapsMetadata),
   });
 
-  const approvedWeightedPermissions = useMemo(() => {
-    return getWeightedPermissions({
-      t,
-      permissions: approvedCombinedPermissions,
-      subjectName: snapName,
-      getSubjectName: getSnapName(snapsMetadata),
-    });
-  }, [t, approvedCombinedPermissions, snapName, snapsMetadata]);
+  const approvedWeightedPermissions = getWeightedPermissions({
+    t,
+    permissions: approvedCombinedPermissions,
+    subjectName: snapName,
+    getSubjectName: getSnapName(snapsMetadata),
+  });
 
   const filteredApprovedWeightedPermissions = getFilteredSnapPermissions(
     approvedWeightedPermissions,
