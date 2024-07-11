@@ -236,7 +236,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Installed');
@@ -246,7 +246,7 @@ describe('Test Snap Metrics', function () {
           version: '2.1.3',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -322,7 +322,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Install Rejected');
@@ -331,7 +331,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -403,7 +403,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Install Failed');
@@ -412,7 +412,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -536,7 +536,7 @@ describe('Test Snap Metrics', function () {
           version: '2.1.3',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -675,7 +675,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Updated');
@@ -686,7 +686,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -811,7 +811,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Update Rejected');
@@ -820,7 +820,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
@@ -941,7 +941,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
         assert.deepStrictEqual(events[1].event, 'Snap Update Failed');
@@ -950,7 +950,7 @@ describe('Test Snap Metrics', function () {
           origin: 'https://metamask.github.io',
           category: 'Snaps',
           locale: 'en',
-          chain_id: '0x539',
+          chain_id: '1337',
           environment_type: 'background',
         });
       },
