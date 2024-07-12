@@ -1,9 +1,8 @@
 import { useEffect, useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setBridgeFeatureFlags } from '../../ducks/bridge/actions';
+import { setBridgeFeatureFlags, setToChain } from '../../ducks/bridge/actions';
 import {
-  getCurrentChainId,
   ///: BEGIN:ONLY_INCLUDE_IF(build-main,build-beta,build-flask)
   getCurrentKeyring,
   getIsBridgeChain,
@@ -29,6 +28,7 @@ import { isHardwareKeyring } from '../../helpers/utils/hardware';
 import { getPortfolioUrl } from '../../helpers/utils/portfolio';
 import { setSwapsFromToken } from '../../ducks/swaps/swaps';
 import { SwapsTokenObject } from '../../../shared/constants/swaps';
+import { getProviderConfig } from '../../ducks/metamask/metamask';
 ///: END:ONLY_INCLUDE_IF
 
 const useBridging = () => {
@@ -37,7 +37,7 @@ const useBridging = () => {
   const trackEvent = useContext(MetaMetricsContext);
 
   const metaMetricsId = useSelector(getMetaMetricsId);
-  const chainId = useSelector(getCurrentChainId);
+  const currentProviderConfig = useSelector(getProviderConfig);
   const keyring = useSelector(getCurrentKeyring);
   const usingHardwareWallet = isHardwareKeyring(keyring.type);
 
@@ -65,12 +65,13 @@ const useBridging = () => {
             token_symbol: token.symbol,
             location,
             text: 'Bridge',
-            chain_id: chainId,
+            chain_id: currentProviderConfig.chainId,
           },
         });
         dispatch(
           setSwapsFromToken({ ...token, address: token.address.toLowerCase() }),
         );
+        dispatch(setToChain(currentProviderConfig));
         if (usingHardwareWallet && global.platform.openExtensionInBrowser) {
           global.platform.openExtensionInBrowser(
             PREPARE_SWAP_ROUTE,
@@ -98,7 +99,7 @@ const useBridging = () => {
             location,
             text: 'Bridge',
             url: portfolioUrl,
-            chain_id: chainId,
+            chain_id: currentProviderConfig.chainId,
             token_symbol: token.symbol,
           },
         });
@@ -107,13 +108,13 @@ const useBridging = () => {
     [
       isBridgeSupported,
       isBridgeChain,
-      chainId,
       setSwapsFromToken,
       dispatch,
       usingHardwareWallet,
       history,
       metaMetricsId,
       trackEvent,
+      currentProviderConfig,
     ],
   );
 
