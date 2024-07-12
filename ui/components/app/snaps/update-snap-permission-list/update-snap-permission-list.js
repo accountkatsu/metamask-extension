@@ -62,8 +62,6 @@ export default function UpdateSnapPermissionList({
     connection_permission: newConnections ?? {},
   };
 
-  const [showAll, setShowAll] = useState(false);
-
   const newWeightedPermissions = getWeightedPermissions({
     t,
     permissions: newCombinedPermissions,
@@ -85,14 +83,14 @@ export default function UpdateSnapPermissionList({
     getSubjectName: getSnapName(snapsMetadata),
   });
 
+  const [showAll, setShowAll] = useState(
+    Object.keys(approvedWeightedPermissions).length < 1,
+  );
+
   const filteredApprovedWeightedPermissions = getFilteredSnapPermissions(
     approvedWeightedPermissions,
     PermissionWeightThreshold.snapUpdateApprovedPermissions,
   );
-
-  if (Object.keys(approvedWeightedPermissions).length < 1 && !showAll) {
-    setShowAll(true);
-  }
 
   const onShowAllPermissions = () => {
     showAllPermissions();
