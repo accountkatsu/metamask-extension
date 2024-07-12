@@ -114,23 +114,17 @@ export default function UpdateSnapPermissionList({
         targetSubjectsMetadata={targetSubjectsMetadata}
         revoked
       />
-      {showAll ? (
-        <SnapPermissionAdapter
-          permissions={approvedWeightedPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          approved
-        />
-      ) : (
-        <SnapPermissionAdapter
-          permissions={filteredApprovedWeightedPermissions}
-          snapId={snapId}
-          snapName={snapName}
-          targetSubjectsMetadata={targetSubjectsMetadata}
-          approved
-        />
-      )}
+      <SnapPermissionAdapter
+        permissions={
+          showAll
+            ? approvedWeightedPermissions
+            : filteredApprovedWeightedPermissions
+        }
+        snapId={snapId}
+        snapName={snapName}
+        targetSubjectsMetadata={targetSubjectsMetadata}
+        approved
+      />
       {showAll ? null : (
         <Box
           display={Display.Flex}
