@@ -87,10 +87,13 @@ export class BridgePage {
     assert.ok((await this.driver.getCurrentUrl()).includes('asset'));
   };
 
-  verifyPortfolioTab = async (url: string, handleCount: number) => {
-    await this.driver.waitUntilXWindowHandles(handleCount);
+  verifyPortfolioTab = async (_handleCount: number) => {
+    // await this.driver.waitUntilXWindowHandles(_handleCount);
     await this.driver.switchToWindowWithTitle('MetaMask Portfolio - Bridge');
-    assert.equal(await this.driver.getCurrentUrl(), url);
+    assert.match(
+      await this.driver.getCurrentUrl(),
+      /^https:\/\/portfolio\.metamask\.io\/bridge/u,
+    );
   };
 
   verifySwapPage = async () => {

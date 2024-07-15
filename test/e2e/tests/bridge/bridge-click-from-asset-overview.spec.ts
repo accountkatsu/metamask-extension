@@ -25,20 +25,14 @@ describe('Click bridge button from asset page @no-mmi', function (this: Suite) {
         // ETH
         await bridgePage.loadAssetPage(contractRegistry);
         await bridgePage.load('coin-overview');
-        await bridgePage.verifyPortfolioTab(
-          'https://portfolio.metamask.io/bridge?metametricsId=null',
-          2,
-        );
+        await bridgePage.verifyPortfolioTab(2);
 
         await bridgePage.reloadHome();
 
         // TST
         await bridgePage.loadAssetPage(contractRegistry, 'TST');
         await bridgePage.load('token-overview');
-        await bridgePage.verifyPortfolioTab(
-          'https://portfolio.metamask.io/bridge?metametricsId=null',
-          3,
-        );
+        await bridgePage.verifyPortfolioTab(3);
       },
     );
   });
