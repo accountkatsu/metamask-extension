@@ -62,7 +62,6 @@ import {
 } from '../../../helpers/constants/design-system';
 import { Box, Icon, IconName } from '../../component-library';
 import IconButton from '../../ui/icon-button';
-import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 ///: BEGIN:ONLY_INCLUDE_IF(build-main,build-beta,build-flask)
 import { getPortfolioUrl } from '../../../helpers/utils/portfolio';
 import useRamps from '../../../hooks/ramps/useRamps/useRamps';
@@ -219,7 +218,7 @@ const CoinButtons = ({
         token_symbol: 'ETH',
         location: 'Home',
         text: 'Send',
-        chain_id: hexToDecimal(chainId),
+        chain_id: chainId,
       },
     });
     await dispatch(startNewDraftTransaction({ type: AssetType.native }));
@@ -242,7 +241,7 @@ const CoinButtons = ({
           token_symbol: 'ETH',
           location: MetaMetricsSwapsEventSource.MainView,
           text: 'Swap',
-          chain_id: hexToDecimal(chainId),
+          chain_id: getChainId(),
         },
       });
       dispatch(setSwapsFromToken(defaultSwapsToken));
@@ -257,7 +256,6 @@ const CoinButtons = ({
     ///: END:ONLY_INCLUDE_IF
   }, [
     isSwapsChain,
-    chainId,
     ///: BEGIN:ONLY_INCLUDE_IF(build-main,build-beta,build-flask)
     usingHardwareWallet,
     defaultSwapsToken,
@@ -276,11 +274,11 @@ const CoinButtons = ({
       properties: {
         location: 'Home',
         text: 'Buy',
-        chain_id: hexToDecimal(chainId),
+        chain_id: getChainId(),
         token_symbol: defaultSwapsToken,
       },
     });
-  }, [chainId, defaultSwapsToken]);
+  }, [defaultSwapsToken]);
 
   const handleBridgeOnClick = useCallback(() => {
     if (isBridgeChain) {
@@ -300,12 +298,12 @@ const CoinButtons = ({
         properties: {
           location: 'Home',
           text: 'Bridge',
-          chain_id: hexToDecimal(chainId),
+          chain_id: getChainId(),
           token_symbol: 'ETH',
         },
       });
     }
-  }, [isBridgeChain, chainId, metaMetricsId]);
+  }, [isBridgeChain, metaMetricsId]);
 
   const handlePortfolioOnClick = useCallback(() => {
     const url = getPortfolioUrl('', 'ext_portfolio_button', metaMetricsId);
@@ -316,11 +314,11 @@ const CoinButtons = ({
       properties: {
         location: 'Home',
         text: 'Portfolio',
-        chain_id: hexToDecimal(chainId),
+        chain_id: getChainId(),
         token_symbol: 'ETH',
       },
     });
-  }, [chainId, metaMetricsId]);
+  }, [metaMetricsId]);
   ///: END:ONLY_INCLUDE_IF
 
   return (
