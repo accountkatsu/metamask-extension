@@ -1,5 +1,13 @@
 import log from 'loglevel';
-import { MessageType, WindowProperties } from './types';
+import { io } from 'socket.io-client';
+// import { io } from 'https://cdn.jsdelivr.net/npm/socket.io-client@4.7.1/+esm';
+
+import {
+  ClientToServerEvents,
+  MessageType,
+  ServerToClientEvents,
+  WindowProperties,
+} from './types';
 
 /**
  * This singleton class runs on the Extension background script (service worker in MV3).
@@ -9,6 +17,7 @@ import { MessageType, WindowProperties } from './types';
  */
 class SocketBackgroundToMocha {
   private client: WebSocket;
+  // private socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
   constructor() {
     this.client = new WebSocket('ws://localhost:8111');
@@ -36,6 +45,27 @@ class SocketBackgroundToMocha {
 
     this.client.onerror = (error) =>
       log.error('SocketBackgroundToMocha WebSocket error:', error);
+
+    // this.socket = io('localhost:8112');
+    // const socket = io('http://localhost:9000', {
+    //   transports: ['websocket'],
+    //   jsonp: false,
+    // });
+
+    let ws = io('localhost:8112', {
+      forceNew: true,
+      transports: ['websocket'],
+      // auth: {
+      //   key: key,
+      // },
+      // query: {
+      //   roomId,
+      // },
+    });
+
+    // const socket = io();
+
+    // io()
   }
 
   /**
@@ -111,6 +141,7 @@ class SocketBackgroundToMocha {
   // Send a message to the Mocha/Selenium test
   send(message: MessageType) {
     this.client.send(JSON.stringify(message));
+    this.socket.emit('openTabs', message.tabs);
   }
 
   // Handle messages received from the Mocha/Selenium test

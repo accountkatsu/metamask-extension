@@ -1,10 +1,13 @@
 import events from 'events';
 import { WebSocketServer } from 'ws';
 import {
+  ClientToServerEvents,
   MessageType,
   ServerMochaEventEmitterType,
+  ServerToClientEvents,
   WindowProperties,
 } from './types';
+import { Server } from 'socket.io';
 
 /**
  * This singleton class runs on the Mocha/Selenium test.
@@ -39,9 +42,29 @@ class ServerMochaToBackground {
 
         this.receivedMessage(message);
       };
+
+      // ws.emit('openTabs', [{ id: 1, title: 'test', url: 'http://test.com' }]);
     });
 
     this.eventEmitter = new events.EventEmitter<ServerMochaEventEmitterType>();
+
+    const io = new Server<ClientToServerEvents, ServerToClientEvents>();
+
+    io.listen(8112);
+
+    io.on('connection', (socket) => {
+      console.log('a user connected');
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+
+      socket.on('openTabs', (tabs) => {
+        console.log('io openTabs', tabs);
+      });
+    });
+
+    // console.log('bitoeee');
+    // console.log('bito', ServerMochaEventEmitterType);
   }
 
   // This function is never explicitly called, but in the future it could be

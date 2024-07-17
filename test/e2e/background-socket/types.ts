@@ -23,4 +23,20 @@ export type ServerMochaEventEmitterType = {
   notFound: [openTabs: chrome.tabs.Tab[]];
 };
 
-console.log('bito', ServerMochaEventEmitterType);
+export interface ServerToClientEvents {
+  openTabs: (tabs: chrome.tabs.Tab[]) => void;
+  notFound: () => void;
+  queryTabs: (title: string) => void;
+  waitUntilWindowWithProperty: (
+    property: WindowProperties,
+    value: string,
+  ) => void;
+}
+
+export interface ClientToServerEvents {
+  openTabs: (tabs: chrome.tabs.Tab[]) => void;
+  notFound: () => void;
+}
+
+// console.log('bitoeee');
+// console.log('bito', ServerMochaEventEmitterType);

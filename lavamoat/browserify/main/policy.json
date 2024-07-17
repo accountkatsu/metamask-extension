@@ -5002,6 +5002,93 @@
         "sinon>nise>path-to-regexp>isarray": true
       }
     },
+    "socket.io-client": {
+      "globals": {
+        "location": true
+      },
+      "packages": {
+        "socket.io-client>@socket.io/component-emitter": true,
+        "socket.io-client>debug": true,
+        "socket.io-client>engine.io-client": true,
+        "socket.io>socket.io-parser": true
+      }
+    },
+    "socket.io-client>debug": {
+      "globals": {
+        "console": true,
+        "document": true,
+        "localStorage": true,
+        "navigator": true,
+        "process": true
+      },
+      "packages": {
+        "browserify>process": true,
+        "socket.io-client>debug>ms": true
+      }
+    },
+    "socket.io-client>engine.io-client": {
+      "globals": {
+        "WebTransport": true,
+        "XMLHttpRequest": true,
+        "addEventListener": true,
+        "attachEvent": true,
+        "document": true,
+        "location": true,
+        "navigator": true,
+        "removeEventListener": true
+      },
+      "packages": {
+        "browserify>buffer": true,
+        "socket.io-client>@socket.io/component-emitter": true,
+        "socket.io-client>engine.io-client>debug": true,
+        "socket.io>engine.io>engine.io-parser": true
+      }
+    },
+    "socket.io-client>engine.io-client>debug": {
+      "globals": {
+        "console": true,
+        "document": true,
+        "localStorage": true,
+        "navigator": true,
+        "process": true
+      },
+      "packages": {
+        "browserify>process": true,
+        "socket.io-client>engine.io-client>debug>ms": true
+      }
+    },
+    "socket.io>engine.io>engine.io-parser": {
+      "globals": {
+        "Blob": true,
+        "FileReader": true,
+        "TextDecoder": true,
+        "TextEncoder": true,
+        "TransformStream": true
+      }
+    },
+    "socket.io>socket.io-parser": {
+      "globals": {
+        "Blob": true,
+        "File": true
+      },
+      "packages": {
+        "socket.io-client>@socket.io/component-emitter": true,
+        "socket.io>socket.io-parser>debug": true
+      }
+    },
+    "socket.io>socket.io-parser>debug": {
+      "globals": {
+        "console": true,
+        "document": true,
+        "localStorage": true,
+        "navigator": true,
+        "process": true
+      },
+      "packages": {
+        "browserify>process": true,
+        "socket.io>socket.io-parser>debug>ms": true
+      }
+    },
     "stream-browserify": {
       "packages": {
         "pumpify>inherits": true,

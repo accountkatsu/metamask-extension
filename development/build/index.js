@@ -142,6 +142,7 @@ async function defineAndRunBuildTasks() {
       'stateHooks',
       'sentryHooks',
       'sentry',
+      'setTimeout', // Added for socket.io
     ];
 
     if (
