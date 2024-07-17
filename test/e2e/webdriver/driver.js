@@ -987,7 +987,7 @@ class Driver {
           },
         );
 
-        if (handleUrl === `${url}/`) {
+        if (handleUrl === `${url}/` || handleUrl === url) {
           return handle;
         }
       }

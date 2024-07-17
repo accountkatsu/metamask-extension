@@ -72,7 +72,7 @@ import { ConfirmPageContainerWarning } from '../components/confirm-page-containe
 import CustomNonce from '../components/custom-nonce';
 import FeeDetailsComponent from '../components/fee-details-component/fee-details-component';
 import { BlockaidResultType } from '../../../../shared/constants/security-provider';
-import { ExistingRequestsBannerAlert } from '../confirmation/components/existing-requests-banner-alert/existing-requests-banner-alert';
+import { QueuedRequestsBannerAlert } from '../confirmation/components/queued-requests-banner-alert/queued-requests-banner-alert';
 
 const ALLOWED_HOSTS = ['portfolio.metamask.io'];
 
@@ -385,7 +385,7 @@ export default function TokenAllowance({
         marginLeft={4}
         marginRight={4}
       />
-      <ExistingRequestsBannerAlert />
+      <QueuedRequestsBannerAlert />
       {isSuspiciousResponse(txData?.securityProviderResponse) && (
         <SecurityProviderBannerMessage
           securityProviderResponse={txData.securityProviderResponse}
