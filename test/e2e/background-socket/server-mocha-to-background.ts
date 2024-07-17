@@ -1,8 +1,10 @@
 import events from 'events';
-import log from 'loglevel';
 import { WebSocketServer } from 'ws';
-import { MessageType } from './message-type';
-import { WindowProperties } from './window-handles';
+import {
+  MessageType,
+  ServerMochaEventEmitterType,
+  WindowProperties,
+} from './types';
 
 /**
  * This singleton class runs on the Mocha/Selenium test.
@@ -18,7 +20,7 @@ class ServerMochaToBackground {
   constructor() {
     this.server = new WebSocketServer({ port: 8111 });
 
-    log.debug('ServerMochaToBackground created');
+    console.debug('ServerMochaToBackground created');
 
     this.server.on('connection', (ws: WebSocket) => {
       this.ws = ws;
@@ -29,15 +31,17 @@ class ServerMochaToBackground {
         try {
           message = JSON.parse(ev.data);
         } catch (e) {
-          log.error('error in JSON', e);
-          return;
+          throw new Error(
+            'Error in JSON sent to ServerMochaToBackground: ' +
+              (e as Error).message,
+          );
         }
 
         this.receivedMessage(message);
       };
     });
 
-    this.eventEmitter = new events.EventEmitter();
+    this.eventEmitter = new events.EventEmitter<ServerMochaEventEmitterType>();
   }
 
   // This function is never explicitly called, but in the future it could be
@@ -46,14 +50,13 @@ class ServerMochaToBackground {
 
     this.server.close();
 
-    log.debug('ServerMochaToBackground stopped');
+    console.debug('ServerMochaToBackground stopped');
   }
 
   // Send a message to the Extension background script (service worker in MV3)
   send(message: MessageType) {
     if (!this.ws) {
-      log.debug('No client connected');
-      return;
+      throw new Error('No client connected');
     }
 
     this.ws.send(JSON.stringify(message));
@@ -61,8 +64,9 @@ class ServerMochaToBackground {
 
   // Handle messages received from the Extension background script (service worker in MV3)
   private receivedMessage(message: MessageType) {
-    if (message.command === 'openTabs') {
-      this.eventEmitter.emit('openTabs', message);
+    if (message.command === 'openTabs' && message.tabs) {
+      console.debug('ServerMochaToBackground openTabsBinx', message.tabs);
+      this.eventEmitter.emit('openTabs', message.tabs);
     } else if (message.command === 'notFound') {
       throw new Error('No window found by background script');
     }
@@ -75,10 +79,12 @@ class ServerMochaToBackground {
 
   // Sends the message to the Extension, and waits for a response
   async waitUntilWindowWithProperty(property: WindowProperties, value: string) {
+    console.debug('ServerMochaToBackground dinkadee1');
     this.send({ command: 'waitUntilWindowWithProperty', property, value });
+    console.debug('ServerMochaToBackground dinkadee');
 
     const tabs = await this.waitForResponse();
-    log.debug('got the response', tabs);
+    console.debug('ServerMochaToBackground got the response', tabs);
 
     // The return value here is less useful than we had hoped, because the tabs
     // are not in the same order as driver.getAllWindowHandles()

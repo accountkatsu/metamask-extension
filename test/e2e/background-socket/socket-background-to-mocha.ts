@@ -1,5 +1,5 @@
 import log from 'loglevel';
-import { MessageType, WindowProperties } from './message-type';
+import { MessageType, WindowProperties } from './types';
 
 /**
  * This singleton class runs on the Extension background script (service worker in MV3).
@@ -13,7 +13,8 @@ class SocketBackgroundToMocha {
   constructor() {
     this.client = new WebSocket('ws://localhost:8111');
 
-    this.client.onopen = () => log.debug('WebSocket connection opened');
+    this.client.onopen = () =>
+      log.debug('SocketBackgroundToMocha WebSocket connection opened');
 
     this.client.onmessage = (ev: MessageEvent) => {
       let message: MessageType;
@@ -21,16 +22,20 @@ class SocketBackgroundToMocha {
       try {
         message = JSON.parse(ev.data);
       } catch (e) {
-        log.error('error in JSON', e);
-        return;
+        throw new Error(
+          'Error in JSON sent to SocketBackgroundToMocha: ' +
+            (e as Error).message,
+        );
       }
 
       this.receivedMessage(message);
     };
 
-    this.client.onclose = () => log.debug('WebSocket connection closed');
+    this.client.onclose = () =>
+      log.debug('SocketBackgroundToMocha WebSocket connection closed');
 
-    this.client.onerror = (error) => log.error('WebSocket error:', error);
+    this.client.onerror = (error) =>
+      log.error('SocketBackgroundToMocha WebSocket error:', error);
   }
 
   /**
@@ -110,11 +115,11 @@ class SocketBackgroundToMocha {
 
   // Handle messages received from the Mocha/Selenium test
   private async receivedMessage(message: MessageType) {
-    log.debug('Received message:', message);
+    log.debug('SocketBackgroundToMocha received message:', message);
 
     if (message.command === 'queryTabs') {
       const tabs = await this.queryTabs({ title: message.title });
-      log.debug('Sending tabs:', tabs);
+      log.debug('SocketBackgroundToMocha sending tabs:', tabs);
       this.send({ command: 'openTabs', tabs: this.cleanTabs(tabs) });
     } else if (
       message.command === 'waitUntilWindowWithProperty' &&
