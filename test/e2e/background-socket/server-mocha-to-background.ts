@@ -1,6 +1,7 @@
 import events from 'events';
 import log from 'loglevel';
 import { WebSocketServer } from 'ws';
+import { MessageType } from './message-type';
 import { WindowProperties } from './window-handles';
 
 /**
@@ -22,7 +23,18 @@ class ServerMochaToBackground {
     this.server.on('connection', (ws: WebSocket) => {
       this.ws = ws;
 
-      ws.onmessage = (ev: MessageEvent) => this.receivedMessage(ev.data);
+      ws.onmessage = (ev: MessageEvent) => {
+        let message: MessageType;
+
+        try {
+          message = JSON.parse(ev.data);
+        } catch (e) {
+          log.error('error in JSON', e);
+          return;
+        }
+
+        this.receivedMessage(message);
+      };
     });
 
     this.eventEmitter = new events.EventEmitter();
@@ -38,33 +50,20 @@ class ServerMochaToBackground {
   }
 
   // Send a message to the Extension background script (service worker in MV3)
-  send(message: string | object) {
+  send(message: MessageType) {
     if (!this.ws) {
       log.debug('No client connected');
       return;
     }
 
-    if (typeof message === 'string') {
-      this.ws.send(message);
-    } else {
-      this.ws.send(JSON.stringify(message));
-    }
+    this.ws.send(JSON.stringify(message));
   }
 
   // Handle messages received from the Extension background script (service worker in MV3)
-  private receivedMessage(message: string) {
-    let msg;
-
-    try {
-      msg = JSON.parse(message);
-    } catch (e) {
-      log.error('error in JSON', e);
-      return;
-    }
-
-    if (msg.command === 'openTabs') {
-      this.eventEmitter.emit('openTabs', msg);
-    } else if (msg.command === 'notFound') {
+  private receivedMessage(message: MessageType) {
+    if (message.command === 'openTabs') {
+      this.eventEmitter.emit('openTabs', message);
+    } else if (message.command === 'notFound') {
       throw new Error('No window found by background script');
     }
   }

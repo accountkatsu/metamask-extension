@@ -1,14 +1,13 @@
 import log from 'loglevel';
 import { ThenableWebDriver } from 'selenium-webdriver';
 import { getServerMochaToBackground } from './server-mocha-to-background';
+import { WindowProperties } from './message-type';
 
 type Handle = {
   id: string;
   title: string;
   url: string;
 };
-
-export type WindowProperties = 'title' | 'url';
 
 /**
  * Keeps a list of window handles and their properties (title, url).
