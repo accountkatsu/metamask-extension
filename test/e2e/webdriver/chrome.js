@@ -22,7 +22,7 @@ function getProxyServer(proxyPort) {
  * A wrapper around a {@code WebDriver} instance exposing Chrome-specific functionality
  */
 class ChromeDriver {
-  static async build({ responsive, port, proxyPort }) {
+  static async build({ openDevToolsForTabs, responsive, port, proxyPort }) {
     const args = [
       `--proxy-server=${getProxyServer(proxyPort)}`, // Set proxy in the way that doesn't interfere with Selenium Manager
       '--disable-features=OptimizationGuideModelDownloading,OptimizationHintsFetching,OptimizationTargetPrediction,OptimizationHints,NetworkTimeServiceQuerying', // Stop chrome from calling home so much (auto-downloads of AI models; time sync)
@@ -40,7 +40,7 @@ class ChromeDriver {
 
     // When "responsive" is enabled, open dev tools to force a smaller viewport
     // The minimum window width on Chrome is too large, this is how we're forcing the viewport to be smaller
-    if (openDevToolsForTabs  || responsive) {
+    if (openDevToolsForTabs || responsive) {
       args.push('--auto-open-devtools-for-tabs');
     }
 
