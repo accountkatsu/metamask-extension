@@ -3,12 +3,7 @@ const { Driver } = require('./driver');
 const ChromeDriver = require('./chrome');
 const FirefoxDriver = require('./firefox');
 
-async function buildWebDriver({
-  openDevToolsForTabs,
-  port,
-  timeOut,
-  proxyPort,
-} = {}) {
+async function buildWebDriver({ responsive, port, timeOut, proxyPort } = {}) {
   const browser = process.env.SELENIUM_BROWSER;
 
   const {
@@ -16,7 +11,7 @@ async function buildWebDriver({
     extensionId,
     extensionUrl,
   } = await buildBrowserWebDriver(browser, {
-    openDevToolsForTabs,
+    responsive,
     port,
     proxyPort,
   });
