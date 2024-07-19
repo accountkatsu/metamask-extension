@@ -278,7 +278,7 @@
     "description": "$1 is Learn more link"
   },
   "addNewAccount": {
-    "message": "Adicionar uma nova conta"
+    "message": "Adicionar uma nova conta Ethereum"
   },
   "addNewToken": {
     "message": "Adicionar novo token"
@@ -6232,6 +6232,9 @@
   },
   "useNftDetection": {
     "message": "Detectar NFTs automaticamente"
+  },
+  "useNftDetectionDescriptionText": {
+    "message": "Permita que a MetaMask use serviços de terceiros para adicionar os NFTs que você possui. A detecção automática de NFTs expõe seu endereço IP e o endereço da sua conta a esses serviços. Ativar esse recurso pode associar seu endereço IP ao seu endereço Ethereum e exibir NFTs falsos enviados por golpistas. Você pode adicionar tokens manualmente para evitar esse risco."
   },
   "usePhishingDetection": {
     "message": "Usar detecção de phishing"

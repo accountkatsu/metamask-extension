@@ -278,7 +278,7 @@
     "description": "$1 is Learn more link"
   },
   "addNewAccount": {
-    "message": "Tambahkan akun baru"
+    "message": "Tambahkan akun Ethereum baru"
   },
   "addNewToken": {
     "message": "Tambahkan token baru"
@@ -6232,6 +6232,9 @@
   },
   "useNftDetection": {
     "message": "Deteksi otomatis NFT"
+  },
+  "useNftDetectionDescriptionText": {
+    "message": "Izinkan MetaMask menambahkan NFT yang Anda miliki menggunakan layanan pihak ketiga. Autodeteksi NFT mengekspos alamat IP dan akun Anda ke layanan ini. Mengaktifkan fitur ini dapat mengaitkan alamat IP dengan alamat Ethereum Anda dan menampilkan NFT palsu yang di-airdrop oleh penipu. Anda dapat menambahkan token secara manual untuk menghindari risiko ini."
   },
   "usePhishingDetection": {
     "message": "Gunakan deteksi phishing"
