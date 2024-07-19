@@ -80,7 +80,8 @@ export function formatAmount(locale: string, amount: BigNumber): string {
     MAX_SIGNIFICANT_DECIMAL_PLACES - digitsLeftOfDecimal + 1,
   );
 
-  return new Intl.NumberFormat(locale, {
-    maximumFractionDigits,
-  } as Intl.NumberFormatOptions).format(amount.toNumber());
+  return amount.toFormat(maximumFractionDigits);
+  // return new Intl.NumberFormat(locale, {
+  //   maximumFractionDigits,
+  // } as Intl.NumberFormatOptions).format(amount.toNumber());
 }
