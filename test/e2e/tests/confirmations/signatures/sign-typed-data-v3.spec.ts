@@ -1,9 +1,6 @@
 import { strict as assert } from 'assert';
 import { Suite } from 'mocha';
-import {
-  scrollAndConfirmAndAssertConfirm,
-  withRedesignConfirmationFixtures,
-} from '../helpers';
+import { MockedEndpoint } from 'mockttp';
 import {
   DAPP_HOST_ADDRESS,
   WINDOW_TITLES,
@@ -13,14 +10,18 @@ import {
 } from '../../../helpers';
 import { Ganache } from '../../../seeder/ganache';
 import { Driver } from '../../../webdriver/driver';
-import { Mockttp } from '../../../mock-e2e';
 import {
+  scrollAndConfirmAndAssertConfirm,
+  withRedesignConfirmationFixtures,
+} from '../helpers';
+import { TestSuiteArguments } from '../transactions/shared';
+import {
+  assertAccountDetailsMetrics,
   assertHeaderInfoBalance,
   assertPastedAddress,
+  assertSignatureMetrics,
   clickHeaderInfoBtn,
   copyAddressAndPasteWalletAddress,
-  assertSignatureMetrics,
-  assertAccountDetailsMetrics,
 } from './signature-helpers';
 
 describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
@@ -35,12 +36,8 @@ describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
         driver,
         ganacheServer,
         mockedEndpoint: mockedEndpoints,
-      }: {
-        driver: Driver;
-        ganacheServer: Ganache;
-        mockedEndpoint: Mockttp;
-      }) => {
-        const addresses = await ganacheServer.getAccounts();
+      }: TestSuiteArguments) => {
+        const addresses = await (ganacheServer as Ganache).getAccounts();
         const publicAddress = addresses?.[0] as string;
 
         await unlockWallet(driver);
@@ -55,7 +52,7 @@ describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
         await assertPastedAddress(driver);
         await assertAccountDetailsMetrics(
           driver,
-          mockedEndpoints,
+          mockedEndpoints as MockedEndpoint[],
           'eth_signTypedData_v3',
         );
         await switchToNotificationWindow(driver);
@@ -65,7 +62,7 @@ describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
         await driver.delay(1000);
         await assertSignatureMetrics(
           driver,
-          mockedEndpoints,
+          mockedEndpoints as MockedEndpoint[],
           'eth_signTypedData_v3',
         );
         await assertVerifiedResults(driver, publicAddress);
@@ -79,10 +76,7 @@ describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
       async ({
         driver,
         mockedEndpoint: mockedEndpoints,
-      }: {
-        driver: Driver;
-        mockedEndpoint: Mockttp;
-      }) => {
+      }: TestSuiteArguments) => {
         await unlockWallet(driver);
         await openDapp(driver);
         await driver.clickElement('#signTypedDataV3');
@@ -95,7 +89,7 @@ describe('Confirmation Signature - Sign Typed Data V3', function (this: Suite) {
 
         await assertSignatureMetrics(
           driver,
-          mockedEndpoints,
+          mockedEndpoints as MockedEndpoint[],
           'eth_signTypedData_v3',
         );
 
